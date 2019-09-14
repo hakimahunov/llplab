@@ -82,6 +82,10 @@
 	    .type   _reset, %function
         .thumb_func
 _reset: 
+
+		ldr r8, =GPIO_PA_BASE
+		ldr r9, =GPIO_PC_BASE
+		
 		//====== ENABLE CMU FOR GPIO ======//
 		
 		ldr r0, =CMU_BASE					//Load base addresse of CMU
@@ -93,34 +97,39 @@ _reset:
 		
 		//====== SETUP GPIO PINS =====//
 		
-		ldr r0, =GPIO_PA_BASE				//Load base addresse of GPIO_PA
 		mov r1, #0x2
-		str r1, [r0, #GPIO_CTRL]			//Set high drive strength
+		str r1, [r8, #GPIO_CTRL]			//Set high drive strength
 		
 		ldr r1, =0x55555555
-		str r1, [r0, #GPIO_MODEH]			//Set pins 8-15 (LEDs) to output 
+		str r1, [r8, #GPIO_MODEH]			//Set pins 8-15 (LEDs) to output 
 		
-		ldr r0, =GPIO_PC_BASE				//Load base addresse of GPIO_PA
 		ldr r1, =0x33333333
-		str r1, [r0, #GPIO_MODEL]			//Set pins 0-7 (Buttons) to input
+		str r1, [r9, #GPIO_MODEL]			//Set pins 0-7 (Buttons) to input
 		ldr r1, =0xff
-		str r1, [r0, #GPIO_DOUT]			//Enable internal pull-up
+		str r1, [r9, #GPIO_DOUT]			//Enable internal pull-up
 		
 		//====== TURN ON AND OFF LEDS ======//
 		
-		ldr r0, =GPIO_PA_BASE				
-		ldr r1, =0x0
-		lsl r1, r1, #8
-		str r1, [r0, #GPIO_DOUT]
-		ldr r2, =0x7a1200
+		ldr r1, =0x0						//Value to write to LEDs
+		lsl r1, r1, #8						//Shift 8 bits to from least significant to most significant
+		str r1, [r8, #GPIO_DOUT]			//Write value to LEDs
+		ldr r2, =0x7a1200					//Counter capacity
 		loop:
-			sub r2, r2, #1
-			cmp r2, #0
-			bne loop
-		ldr r1, =0xff
+			sub r2, r2, #1					//Decrement counter
+			cmp r2, #0						//Compare counter
+			bne loop						//If not equal to 0 goto loop
+		ldr r1, =0xff						//Else turn off LEDs
 		lsl r1, r1, #8
-		str r1, [r0, #GPIO_DOUT]
-
+		str r1, [r8, #GPIO_DOUT]
+		
+		
+		//====== POLL ======//
+		
+		poll:
+			ldr r1, [r9, #GPIO_DIN]			//Read value of Buttons
+			lsl r1, r1, #8					//Shift 8 bits to from least significant to most significant
+			str r1, [r8, #GPIO_DOUT]		//Write Buttons value to LEDs
+			b poll							//Polling infinitely
 		
 		
 		
