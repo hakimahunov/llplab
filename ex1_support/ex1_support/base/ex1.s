@@ -4,8 +4,8 @@
 
 	/////////////////////////////////////////////////////////////////////////////
 	//
-  // Exception vector table
-  // This table contains addresses for all exception handlers
+	// Exception vector table
+	// This table contains addresses for all exception handlers
 	//
 	/////////////////////////////////////////////////////////////////////////////
 	
@@ -69,36 +69,79 @@
 	      .long   dummy_handler
 	      .long   dummy_handler
 
-	      .section .text
+	    .section .text
 
 	/////////////////////////////////////////////////////////////////////////////
 	//
 	// Reset handler
-  // The CPU will start executing here after a reset
+	// The CPU will start executing here after a reset
 	//
 	/////////////////////////////////////////////////////////////////////////////
 
-	      .globl  _reset
-	      .type   _reset, %function
+	    .globl  _reset
+	    .type   _reset, %function
         .thumb_func
 _reset: 
-	      b .  // do nothing
+		//====== ENABLE CMU FOR GPIO ======//
+		
+		ldr r0, =CMU_BASE					//Load base addresse of CMU
+		ldr r1, [r0, #CMU_HFPERCLKEN0]		//Load content of HFPERCLKEN register
+		mov r2, #1
+		lsl r2, r2, #CMU_HFPERCLKEN0_GPIO	//Shift left to set 13th bit
+		orr r2, r2, r1						//Set 13th bit wrt content of HFPERCLKEN register
+		str r2, [r0, #CMU_HFPERCLKEN0]		//Store the new content to HFPERCLKEN register
+		
+		//====== SETUP GPIO PINS =====//
+		
+		ldr r0, =GPIO_PA_BASE				//Load base addresse of GPIO_PA
+		mov r1, #0x2
+		str r1, [r0, #GPIO_CTRL]			//Set high drive strength
+		
+		ldr r1, =0x55555555
+		str r1, [r0, #GPIO_MODEH]			//Set pins 8-15 (LEDs) to output 
+		
+		ldr r0, =GPIO_PC_BASE				//Load base addresse of GPIO_PA
+		ldr r1, =0x33333333
+		str r1, [r0, #GPIO_MODEL]			//Set pins 0-7 (Buttons) to input
+		ldr r1, =0xff
+		str r1, [r0, #GPIO_DOUT]			//Enable internal pull-up
+		
+		//====== TURN ON AND OFF LEDS ======//
+		
+		ldr r0, =GPIO_PA_BASE				
+		ldr r1, =0x0
+		lsl r1, r1, #8
+		str r1, [r0, #GPIO_DOUT]
+		ldr r2, =0x7a1200
+		loop:
+			sub r2, r2, #1
+			cmp r2, #0
+			bne loop
+		ldr r1, =0xff
+		lsl r1, r1, #8
+		str r1, [r0, #GPIO_DOUT]
+
+		
+		
+		
+		
+	    b .  // do nothing
 	
 	/////////////////////////////////////////////////////////////////////////////
 	//
-  // GPIO handler
-  // The CPU will jump here when there is a GPIO interrupt
+	// GPIO handler
+	// The CPU will jump here when there is a GPIO interrupt
 	//
 	/////////////////////////////////////////////////////////////////////////////
 	
         .thumb_func
 gpio_handler:  
 
-	      b .  // do nothing
+		b .  // do nothing
 	
 	/////////////////////////////////////////////////////////////////////////////
 	
         .thumb_func
 dummy_handler:  
-        b .  // do nothing
+		b .  // do nothing
 
