@@ -83,8 +83,8 @@
         .thumb_func
 _reset: 
 
-		ldr r8, =GPIO_PA_BASE
-		ldr r9, =GPIO_PC_BASE
+		ldr r8, =GPIO_PA_BASE				//Register for LEDs
+		ldr r9, =GPIO_PC_BASE				//Register for Buttons
 		
 		//====== ENABLE CMU FOR GPIO ======//
 		
@@ -105,7 +105,7 @@ _reset:
 		
 		ldr r1, =0x33333333
 		str r1, [r9, #GPIO_MODEL]			//Set pins 0-7 (Buttons) to input
-		ldr r1, =0xff
+		mov r1, 0xff
 		str r1, [r9, #GPIO_DOUT]			//Enable internal pull-up
 		
 		//====== TURN ON AND OFF LEDS ======//
@@ -117,24 +117,62 @@ _reset:
 		loop:
 			sub r2, r2, #1					//Decrement counter
 			cmp r2, #0						//Compare counter
-			bne loop						//If not equal to 0 goto loop
-		ldr r1, =0xff						//Else turn off LEDs
+			bne loop						//If is not equal to 0 goto loop
+		mov r1, 0xff						//Else turn off LEDs
 		lsl r1, r1, #8
 		str r1, [r8, #GPIO_DOUT]
 		
 		
 		//====== POLL ======//
 		
+		mov r7, #0b11111111					//Register for keeping previous Buttons state
 		poll:
-			ldr r1, [r9, #GPIO_DIN]			//Read value of Buttons
-			lsl r1, r1, #8					//Shift 8 bits to from least significant to most significant
-			str r1, [r8, #GPIO_DOUT]		//Write Buttons value to LEDs
-			b poll							//Polling infinitely
+			ldr r0, [r9, #GPIO_DIN]			//Read state of Buttons
+			cmp r0, r7						//Compare current state with previous
+			beq poll						//If are equal goto poll
+			
+			cmp r0, #0b11111110				//Check if Left bnt pressed
+			beq shift_left
+			cmp r0, #0b11111011				//Check if Right bnt pressed
+			beq shift_right
+			cmp r0, #0b11111101				//Check if Up bnt pressed
+			beq vol_up
+			cmp r0, #0b11110111				//Check if Down bnt pressed
+			beq vol_down
+			
+			b update_prev_state
+			
 		
+		update_prev_state:
+			mov r7, r0
+			b poll
 		
-		
-		
-	    b .  // do nothing
+		shift_left:
+			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
+			lsr r2, r2, #8
+			lsr r1, r2, #1					//Shift right 1 bit
+			add r1, r1, #0x80
+			lsl r1, r1, #8
+			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
+			b update_prev_state
+		shift_right:
+			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
+			lsr r2, r2, #8
+			lsl r1, r2, #1					//Shift left 1 bit
+			add r1, r1, #0x01
+			lsl r1, r1, #8
+			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
+			b update_prev_state
+		vol_up:
+			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
+			ror r1, r2, #1
+			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
+			b update_prev_state
+		vol_down:
+			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
+			lsl r1, r2, #1					//Shift left 1 bit
+			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
+			b update_prev_state
 	
 	/////////////////////////////////////////////////////////////////////////////
 	//
