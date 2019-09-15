@@ -98,7 +98,7 @@ _reset:
 		
 		//====== SETUP GPIO PINS =====//
 		
-		mov r1, #0x2
+		mov r1, #0x1
 		str r1, [r8, #GPIO_CTRL]			//Set high drive strength
 		
 		ldr r1, =0x55555555
@@ -146,6 +146,7 @@ _reset:
 		mov r6, #6							
 		str r6, [r5]						
 		
+		
 		//====== ENABLE INTERRUPT FOR GPIO ======//
 	
 		ldr r1, [r10, #GPIO_IF]				
@@ -154,9 +155,8 @@ _reset:
 		ldr r1, =0x22222222					
 		str r1, [r10, #GPIO_EXTIPSELL]
 		
-		mov r1, #0xff
+		mov r1, #0x0f
 		str r1, [r10, #GPIO_EXTIFALL]		
-		//str r1, [r10, #GPIO_EXTIRISE]		
 		str r1, [r10, #GPIO_IEN]				
 		
 		ldr r2, =ISER0						
