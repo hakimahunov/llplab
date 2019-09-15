@@ -144,28 +144,28 @@ _reset:
 			
 		
 		update_prev_state:
-			mov r7, r0
+			mov r7, r0						//Save previous state of the Buttons
 			b poll
 		
 		shift_left:
 			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
-			lsr r2, r2, #8
+			lsr r2, r2, #8					//Shift 8 bits to from most significant to least significant
 			lsr r1, r2, #1					//Shift right 1 bit
-			add r1, r1, #0x80
+			add r1, r1, #0x80				//Turn off one LED from the left
 			lsl r1, r1, #8
 			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
 			b update_prev_state
 		shift_right:
 			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
-			lsr r2, r2, #8
+			lsr r2, r2, #8					//Shift 8 bits to from most significant to least significant
 			lsl r1, r2, #1					//Shift left 1 bit
-			add r1, r1, #0x01
+			add r1, r1, #0x01				//Turn off one LED from the right
 			lsl r1, r1, #8
 			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
 			b update_prev_state
 		vol_up:
 			ldr r2, [r8, #GPIO_DIN]			//Load LEDs state
-			ror r1, r2, #1
+			ror r1, r2, #1					//Rotate 1 bit right
 			str r1, [r8, #GPIO_DOUT]		//Write shifted state to LEDs
 			b update_prev_state
 		vol_down:

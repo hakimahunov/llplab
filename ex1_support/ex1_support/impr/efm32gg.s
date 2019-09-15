@@ -74,9 +74,19 @@
 	      EMU_BASE = 0x400c6000
 
         EMU_CTRL = 0x000
+		EMU_MEMCTRL = 0x004
 
 	      //////////////////////////////////////////////////////////////////////
         // System Control Block
 
         SCR = 0xe000ed10
 
+		//////////////////////////////////////////////////////////////////////
+		// MEMORY SYSTEM CONTROL
+
+		MSC = 0x400c0000
+		
+		//Register offsets from base address
+		MSC_READ_CONTROL = 0x004
+
+		
