@@ -96,7 +96,7 @@ _reset:
 		  
 		  // now with GPIO_CTRL
 		  ldr r1, =GPIO_PA_BASE
-		  mov r3,#2   //MOVE VALUE 2 TO R3
+		  mov r3,#1   //MOVE VALUE 2 TO R3
 		  str r3, [r1,#GPIO_CTRL] //STORE VALUE 2 TO GPIO_PA_CTRL
 		  
 		  //now with GPI_PA_MODEH
@@ -107,11 +107,29 @@ _reset:
 		  //now with GPIO_PA_DOUT
 		  
 		  ldr r1, =GPIO_PA_BASE
-		  ldr r3,=0xf0   //MOVE VALUE f0 TO R3
+		  ldr r3,=0x0f00   //MOVE VALUE f0 TO R3
 		  str r3, [r1,#GPIO_DOUT] //STORE VALUE f0 TO GPIO_DOUT
 		  
+		  //now with GPIO_PC_MODEL
+		  ldr r1, =GPIO_PC_BASE
+		  ldr r3,=0x33333333   //MOVE VALUE 3333333 TO R3
+		  str r3, [r1,#GPIO_MODEL] //STORE VALUE 333333 TO GPIO_PC_MODEL
 		  
-	      b .  // do nothing
+		  //now with GPIO_PC_DOUT
+		  ldr r1, =GPIO_PC_BASE
+		  ldr r3,=0xff   //MOVE VALUE ff TO R3
+		  str r3, [r1,#GPIO_DOUT] //STORE VALUE ff TO GPIO_PC_DOUT
+		  
+		  
+		  //now reading from GPIO_PC_DIN
+		  
+		  ldr r1, =GPIO_PC_BASE
+		 loop1:
+		  ldr r2, [r1,#GPIO_DIN] //load the value to r2
+		  lsl r2,r2,#8
+		  ldr r3, =GPIO_PA_BASE
+		  str r2, [r3,#GPIO_DOUT]
+	      b loop1
 	      
 	
 	/////////////////////////////////////////////////////////////////////////////
