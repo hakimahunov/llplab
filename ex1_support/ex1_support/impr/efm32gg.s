@@ -84,9 +84,9 @@
 		//////////////////////////////////////////////////////////////////////
 		// MEMORY SYSTEM CONTROL
 
-		MSC = 0x400c0000
+		MSC_BASE = 0x400c0000
 		
 		//Register offsets from base address
-		MSC_READ_CONTROL = 0x004
+		MSC_READCTRL = 0x004
 
 		

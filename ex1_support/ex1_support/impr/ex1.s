@@ -125,23 +125,24 @@ _reset:
 		
 		//====== DISABLE INSTRUCTION CACHE ======//
 		
-		ldr r5, =MSC
-		ldr r6, [r5, #MSC_READ_CONTROL]
+		ldr r5, =MSC_BASE					//Load base address of MSC
+		ldr r6, [r5, #MSC_READCTRL]			//Load the content of READCTRL register
 		
 		mov r4, #1
-		lsl r4, r4, #3
-		orr r6, r6, r4
+		lsl r4, r4, #3						//Set 4th bit
+		orr r6, r6, r4						//Set 4th bit wrt content of READCTRL register
 		
-		str r6, [r5, #MSC_READ_CONTROL]
+		str r6, [r5, #MSC_READCTRL]			//Store the new content to READCTRL register
 		
-		//====== DISABLE RAM BLOCK ======//
+		//====== DISABLE RAM BLOCKS ======//
 	
-		ldr r5, =EMU_BASE
+		ldr r5, =EMU_BASE					
 		mov r6, #0x7
 		str r6, [r5, #EMU_MEMCTRL]
 		
 		
 		//====== ENABLES DEEP SLEEP ======//
+		
 		ldr r5, =SCR						
 		mov r6, #6							
 		str r6, [r5]						
@@ -149,19 +150,19 @@ _reset:
 		
 		//====== ENABLE INTERRUPT FOR GPIO ======//
 	
-		ldr r1, [r10, #GPIO_IF]				
-		str r1, [r10, #GPIO_IFC]				
+		ldr r1, [r10, #GPIO_IF]				//Load the source of interrupt
+		str r1, [r10, #GPIO_IFC]			//Clear interrupt
 		
 		ldr r1, =0x22222222					
-		str r1, [r10, #GPIO_EXTIPSELL]
+		str r1, [r10, #GPIO_EXTIPSELL]		//Select PortC for external interrupts
 		
-		mov r1, #0x0f
-		str r1, [r10, #GPIO_EXTIFALL]		
-		str r1, [r10, #GPIO_IEN]				
+		mov r1, #0xff
+		str r1, [r10, #GPIO_EXTIFALL]		//Enable falling edge trigger
+		str r1, [r10, #GPIO_IEN]			//Enable external interrupt
 		
 		ldr r2, =ISER0						
 		ldr r1, =0x802						
-		str r1, [r2]						
+		str r1, [r2]						//Enable interrupt handling 
 		
 		wfi
 		
