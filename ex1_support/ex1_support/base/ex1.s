@@ -113,7 +113,7 @@ _reset:
 		ldr r1, =0x0						//Value to write to LEDs
 		lsl r1, r1, #8						//Shift 8 bits to from least significant to most significant
 		str r1, [r8, #GPIO_DOUT]			//Write value to LEDs
-		ldr r2, =0x7a1200					//Counter capacity
+		ldr r2, =0x7a1200					//Counter capacity (random value)
 		loop:
 			sub r2, r2, #1					//Decrement counter
 			cmp r2, #0						//Compare counter
