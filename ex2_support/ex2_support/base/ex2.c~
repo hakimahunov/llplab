@@ -8,9 +8,9 @@
 //====== Declaration of peripheral setup functions ======//
 
 void setupGPIO ();
-//void setupTimer (uint32_t period);
-//void setupDAC ();
-//void setupNVIC ();
+void setupTimer (uint32_t period);
+void setupDAC ();
+void pushToDAC(int sample);
 
 int
 main (void)
@@ -18,13 +18,17 @@ main (void)
   //====== Call the peripheral setup functions ======//
 
   setupGPIO ();
-  //setupDAC();
-  //setupTimer(SAMPLE_PERIOD);
+  setupDAC();
+  setupTimer(SAMPLE_PERIOD);
+
+	int t = 0;
 
   while (1)
     {
+    	t++;
       int btnState = *GPIO_PC_DIN;
       *GPIO_PA_DOUT = btnState << 8;
+      if (t < 50) pushToDAC(t * 3 + 5); else t = 0;
     }
 
   return 0;
