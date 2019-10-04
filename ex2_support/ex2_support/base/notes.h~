@@ -1,8 +1,19 @@
 #include <stdint.h>
 
-//====== FREQUENCIES OF DIFFERENT NOTES ======//
+//====== FREQUENCIES OF DIFFERENT NOTES ======// //Values are teken from https://physics.info/music/
     
 #define R   0
+#define B1  62  
+#define C1  33
+#define E1  41
+#define F1  44
+#define C2  65
+#define E2  82
+#define Cs2 69 
+#define D2  73
+#define Ds2 79
+#define F2  87
+#define Fs2 93
 #define C3  131
 #define Cs3 139
 #define D3  147

@@ -22,7 +22,7 @@ ex2.elf : ex2.o timer.o dac.o gpio.o sounds.o
 
 .PHONY : pretty
 pretty :
-	-indent *.c *.h -kr -i8
+	-indent *.c *.h -kr -i4
 
 .PHONY : upload
 upload :
