@@ -9,13 +9,19 @@
 #define   AMPLITUDE			100
 #define   SAMPLE_RATE		88200
 
-#define BTN_CHECK(state, btn_mask) (~(~(state) & btn_mask))	//Macros to check which button is pressed
-/*Example:
+#define BTN_CHECKER(shift_amount, state) ((1<<(shift_amount)) & ~(state))	//Macros to check which button is pressed
+/*Examples:
 * state = 11101111
-* bnt_mask = 11101111
+* shift_amount = 4
 * ~state = 00010000
-* ~state & btn_mask = 11101111 & 00010000 = 00000000
-* ~(~state & btn_mask) = 11111111
+* shifted_value = 00010000
+* ~state & shifted_value = 00010000 & 00010000 = 00010000
+*
+* state = 10111111
+* shift_amount = 4
+* ~state = 01000000
+* shifted_value = 00010000
+* ~state & shifted_value = 01000000 & 00010000 = 00000000
 */
 
 //====== DECLARATION OF FUNCTIONS ======//

@@ -29,16 +29,17 @@ int main(void)
 void btnHandler(int btnState)
 {
     bool isExplosion = false;	//Is needed for adjusting period duration for the notes
-    if (BTN_CHECK(btnState, 0xef)) {	// SW5
+    if (BTN_CHECKER(4, btnState)) {	// SW5
 	playSound(pinkPanther, pinkPantherCoefs,
 		  sizeof(pinkPanther) / sizeof(int), isExplosion);
-    } else if (BTN_CHECK(btnState, 0xdf)) {	// SW6
+    } else if (BTN_CHECKER(5, btnState)) {	// SW6
 	playSound(blaster, blasterCoefs,
 		  sizeof(blaster) / sizeof(int), isExplosion);
-    } else if (BTN_CHECK(btnState, 0xbf)) {	// SW7
+    } else if (BTN_CHECKER(6, btnState)) {	// SW7
 	playSound(blasterStrong, blasterStrongCoefs,
 		  sizeof(blasterStrong) / sizeof(int), isExplosion);
-    } else if (BTN_CHECK(btnState, 0x7f)) {	// SW8
+    } else if (BTN_CHECKER(7, btnState)) {	// SW8
+    isExplosion = true;
 	playSound(explosion, explosionCoefs,
 		  sizeof(explosion) / sizeof(int), isExplosion);
     }
