@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 //====== FREQUENCIES OF DIFFERENT NOTES ======//
-
+    
 #define R   0
 #define C3  131
 #define Cs3 139
