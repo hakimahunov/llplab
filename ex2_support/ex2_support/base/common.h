@@ -9,16 +9,29 @@
 #define   AMPLITUDE			100
 #define   SAMPLE_RATE		88200
 
+#define BTN_CHECK(state, btn_mask) (~(~(state) & btn_mask))	//Macros to check which button is pressed
+/*Example:
+* state = 11101111
+* bnt_mask = 11101111
+* ~state = 00010000
+* ~state & btn_mask = 11101111 & 00010000 = 00000000
+* ~(~state & btn_mask) = 11111111
+*/
+
 //====== DECLARATION OF FUNCTIONS ======//
 
+//From sounds.c
 void playSound(int *notes, int *noteLengths, int sizeOfArray,
 	       bool isExoplosion);
 void playSingleNote(int frequency, int noteLengthCoef, bool isExplosion);
-
+//From gpio.c
 void setupGPIO();
+//From timer.c
 void setupTimer(uint32_t period);
+//From dac.c
 void setupDAC();
 void pushToDAC(int sample);
+//From ex2.c
 void btnHandler(int btnState);
 
 
