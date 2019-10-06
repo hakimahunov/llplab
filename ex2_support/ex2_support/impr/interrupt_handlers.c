@@ -9,8 +9,8 @@
 int *notesLocal;
 int *noteLengthsLocal;
 int sizeOfArrayLocal;
-int halfPeriodCounter;
 int periodsAmountLocal;
+int halfPeriodCounter;
 int interruptCounter;
 int sample;
 int noteIndex;
@@ -82,7 +82,7 @@ void timerInterruptHandler()
 		halfPeriodCounter = 0;
 	}
 	
-	if (noteIndex >= sizeOfArrayLocal) {	// When all notes are played
+	if (noteIndex >= sizeOfArrayLocal) {	//Done with all notes
 		suspendTimer();
 		disableDAC();
 		*GPIO_PA_DOUT = 0xff00; //Turn off the LEDs
@@ -92,7 +92,7 @@ void timerInterruptHandler()
 	
 	if (interruptCounter % (SAMPLE_RATE / notesLocal[noteIndex] / 2) == 0) {
 		halfPeriodCounter++;
-		sample = (sample == AMPLITUDE) ? 0 : AMPLITUDE;
+		sample = (sample == AMPLITUDE) ? 0 : AMPLITUDE; //Generate square waves
 		pushToDAC(sample);
 	}
 }

@@ -97,6 +97,7 @@
 #define EMU_BASE2 0x400c6000
 
 #define EMU_CTRL ((volatile uint32_t*)(EMU_BASE2 + 0x000))
+#define EMU_MEMCTRL ((volatile uint32_t*)(EMU_BASE2 + 0x004))
 
 // DAC0
 
@@ -141,3 +142,9 @@
 #define SCR          ((volatile uint32_t*)0xe000ed10)
 #define SYSTICK_CTRL ((volatile uint32_t*)0xe000e010)
 #define SYSTICK_LOAD ((volatile uint32_t*)0xe000e014)
+
+// MSC
+
+#define MSC_BASE = 0x400c0000
+
+#define MSC_READCTRL ((volatile uint32_t*)(DMA_BASE + 0x004))

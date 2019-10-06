@@ -9,7 +9,7 @@
 #define   AMPLITUDE			100
 #define   SAMPLE_RATE		88200
 
-#define BTN_CHECKER(shift_amount, state) ((1<<(shift_amount)) & ~(state))	//Macros to check which button is pressed
+#define BTN_CHECKER(shift_amount, state) ((1<<(shift_amount)) & ~(state))	//Macro to check which button is pressed
 /*Examples:
 * state = 11101111
 * shift_amount = 4
@@ -48,7 +48,7 @@ void initializeLocalVariables(int notes[], int noteLengths[], int sizeOfArray, b
 void delay(int time);
 //From ex2.c
 void sleepMode(int mode);
-
+void energyOptimizationRoutine();
 
 //====== SOUNDS ======//
 
