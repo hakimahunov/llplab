@@ -45,6 +45,8 @@ void btnInterruptHandler();
 void timerInterruptHandler();
 void initializeLocalVariables(int notes[], int noteLengths[], int sizeOfArray, bool isExplosion);
 void delay(int time);
+//From ex2.c
+void sleepMode(int mode);
 
 
 //====== SOUNDS ======//

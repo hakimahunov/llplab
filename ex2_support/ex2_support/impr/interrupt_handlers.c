@@ -44,6 +44,7 @@ void __attribute__ ((interrupt)) GPIO_ODD_IRQHandler()
 void btnInterruptHandler()
 {
 	*GPIO_IFC = *GPIO_IF; //Clear interrupt
+	sleepMode(2);
 	
 	int btnState = *GPIO_PC_DIN;	//Read the buttons state
 	*GPIO_PA_DOUT = btnState << 8;	//Write buttons state to LEDs
@@ -63,6 +64,9 @@ void btnInterruptHandler()
     isExplosion = true;
 	initializeLocalVariables(explosion, explosionCoefs,
 		  sizeof(explosion) / sizeof(int), isExplosion);
+    } else {
+    	*GPIO_PA_DOUT = 0xff00; //Turn off the LEDs
+		sleepMode(6);
     }
 }
 
@@ -81,6 +85,7 @@ void timerInterruptHandler()
 	if (noteIndex >= sizeOfArrayLocal) {	// When all notes are played
 		suspendTimer();
 		*GPIO_PA_DOUT = 0xff00; //Turn off the LEDs
+		sleepMode(6);
 		return;
 	}
 	
