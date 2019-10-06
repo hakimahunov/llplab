@@ -11,7 +11,7 @@ void setupDAC()
     *DAC0_CH1CTRL = 1;		//Enable right channel for DAC
 }
 
-void disableDAC()
+void desableDAC()
 {
 	*DAC0_CTRL = 0;
 	*DAC0_CH0CTRL = 0;

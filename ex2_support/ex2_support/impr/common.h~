@@ -39,6 +39,7 @@ void releaseTimer ();
 void suspendTimer();
 //From dac.c
 void setupDAC();
+void desableDAC();
 void pushToDAC(int sample);
 //From interrupt_handler.c
 void btnInterruptHandler();
@@ -46,7 +47,7 @@ void timerInterruptHandler();
 void initializeLocalVariables(int notes[], int noteLengths[], int sizeOfArray, bool isExplosion);
 void delay(int time);
 //From ex2.c
-void deepSleepMode();
+void sleepMode(int mode);
 
 
 //====== SOUNDS ======//

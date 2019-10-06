@@ -84,6 +84,7 @@ void timerInterruptHandler()
 	
 	if (noteIndex >= sizeOfArrayLocal) {	// When all notes are played
 		suspendTimer();
+		disableDAC();
 		*GPIO_PA_DOUT = 0xff00; //Turn off the LEDs
 		sleepMode(6);
 		return;
@@ -107,6 +108,7 @@ void initializeLocalVariables(int notes[], int noteLengths[], int sizeOfArray, b
 	sample = 0;
 	noteIndex = 0;
 	
+	setupDAC();
 	releaseTimer();
 }
 

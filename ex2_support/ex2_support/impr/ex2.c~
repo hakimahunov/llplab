@@ -11,10 +11,10 @@ int main(void)
     //====== PERIFERALS INITIALIZATON ======//
 
     setupGPIO();
-    setupDAC();
+    //setupDAC();
     setupTimer(SAMPLE_PERIOD);
     setupNVIC();
-    deepSleepMode();
+    sleepMode(6);
 
     //====== WAITING FOR INTERRUPT ======// 
 

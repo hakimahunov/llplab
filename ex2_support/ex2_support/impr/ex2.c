@@ -11,7 +11,7 @@ int main(void)
     //====== PERIFERALS INITIALIZATON ======//
 
     setupGPIO();
-    setupDAC();
+    //setupDAC(); //Migrated to interrupt_handler.c
     setupTimer(SAMPLE_PERIOD);
     setupNVIC();
     sleepMode(6);

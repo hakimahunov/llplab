@@ -39,6 +39,7 @@ void releaseTimer ();
 void suspendTimer();
 //From dac.c
 void setupDAC();
+void disableDAC();
 void pushToDAC(int sample);
 //From interrupt_handler.c
 void btnInterruptHandler();
