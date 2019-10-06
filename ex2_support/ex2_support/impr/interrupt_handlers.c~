@@ -67,7 +67,7 @@ void btnInterruptHandler()
 }
 
 void timerInterruptHandler()
-{
+{s
 	*TIMER1_IFC = 1;	//Clear interrupt
 	interruptCounter++;
 	
