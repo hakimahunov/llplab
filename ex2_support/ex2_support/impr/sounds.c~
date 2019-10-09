@@ -6,15 +6,14 @@
 
 
 //====== SOUNDS ======//
-
-int pinkPanther[] = {		//Sequence of notes
+int pinkPanther[] = {		
     Gs4, A4, R, B4, C5, R, Gs4,
     A4, R, B4, C5, R, F5, E5,
     R, A4, C5, R, E5, Ds5, R,
     D5, C5, A4, G4, A4, R, A4
 };
 
-int pinkPantherCoefs[] = {	//Length coefficient for each note
+int pinkPantherCoefs[] = {
     2, 2, 5, 2, 2, 4, 2,
     2, 1, 2, 2, 1, 2, 2,
     1, 2, 2, 1, 2, 4, 3,
