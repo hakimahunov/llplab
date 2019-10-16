@@ -6,7 +6,7 @@
 
 
 //====== SOUNDS ======//
-int pinkPanther[] = {		
+int pinkPanther[] = {
     Gs4, A4, R, B4, C5, R, Gs4,
     A4, R, B4, C5, R, F5, E5,
     R, A4, C5, R, E5, Ds5, R,

@@ -3,18 +3,36 @@
 
 #include "efm32gg.h"		//File with register definitions
 #include "common.h"		//For self defined variables and functions
+#include "notes.h"
+
+
 
 
 int main(void)
 {
+
+
     //====== PERIFERALS INITIALIZATON ======//
     setupGPIO();
-    //setupDAC();                               //Migrated to interrupt_handler.c
+    //setupDAC();                       //Migrated to interrupt_handler.c
     setupTimer(SAMPLE_PERIOD);
     setupNVIC();
 
+    //====== AFTER RESET MELODY ======//
+
+    initializeLocalVariables(pinkPanther, pinkPantherCoefs,
+			     sizeof(pinkPanther) / sizeof(int), false);
+    int i = 1000000;
+    int j = 1;
+    while (j < i) {
+	j++;
+    }
+
+
     energyOptimizationRoutine();
     sleepMode(6);
+
+
 
     //====== WAIT FOR INTERRUPT ======// 
     while (1) {

@@ -13,6 +13,8 @@ int main(void)
     setupGPIO();
     setupDAC();
     setupTimer(SAMPLE_PERIOD);
+   // playSound(pinkPanther, pinkPantherCoefs,
+		//  sizeof(pinkPanther) / sizeof(int), false);
 
     //====== BUSY-WAITING FOR BUTTON CLICK ======// 
 
