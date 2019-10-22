@@ -44,10 +44,6 @@
 #define GPIO_IFC       ((volatile uint32_t*)(GPIO_PA_BASE + 0x11c))
 #define GPIO_IF		   ((volatile uint32_t*)(GPIO_PA_BASE + 0x114))
 
-#define GPIO_BASE 0x40006100
-
-#define GPIO_CTRL	   ((volatile uint32_t*)(GPIO_BASE + 0x00))
-
 // CMU
 
 #define CMU_BASE2 0x400c8000

@@ -35,7 +35,7 @@ void setupGPIO();
 void setupNVIC();
 //From timer.c
 void setupTimer(uint32_t period);
-void releaseTimer ();
+void releaseTimer();
 void suspendTimer();
 //From dac.c
 void setupDAC();
@@ -44,7 +44,8 @@ void pushToDAC(int sample);
 //From interrupt_handler.c
 void btnInterruptHandler();
 void timerInterruptHandler();
-void initializeLocalVariables(int notes[], int noteLengths[], int sizeOfArray, bool isExplosion);
+void initializeLocalVariables(int notes[], int noteLengths[],
+			      int sizeOfArray, bool isExplosion);
 void delay(int time);
 //From ex2.c
 void sleepMode(int mode);

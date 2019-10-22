@@ -34,7 +34,7 @@ void playSingleNote(int frequency, int noteLengthCoef, bool isExplosion)
 	(isExplosion ? BASE_PERIODS_EXPL * noteLengthCoef : BASE_PERIODS *
 	 noteLengthCoef);
     int samplesInPeriod = SAMPLE_RATE / frequency;
-    //Make number of samples in period even. Is needed to exact define number of samples if a half period
+    //Make number of samples in period even. Is needed to exact define number of samples in a half period
     samplesInPeriod =
 	(samplesInPeriod % 2 != 0) ? samplesInPeriod + 1 : samplesInPeriod;
     int samplesInHalfPeriod = samplesInPeriod / 2;

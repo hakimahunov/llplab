@@ -11,12 +11,12 @@ void setupTimer(uint16_t period)
 
 void releaseTimer()
 {
-	*TIMER1_IEN = 1;	//Enable interrupt for timer
-	*TIMER1_CMD = 1;	//Start the timer
+    *TIMER1_IEN = 1;		//Enable interrupt for timer
+    *TIMER1_CMD = 1;		//Start the timer
 }
 
 void suspendTimer()
 {
-	*TIMER1_IEN = 0;	//Disable interrupt for timer
-	*TIMER1_CMD = 2;	//Stop the timer
+    *TIMER1_IEN = 0;		//Disable interrupt for timer
+    *TIMER1_CMD = 2;		//Stop the timer
 }
