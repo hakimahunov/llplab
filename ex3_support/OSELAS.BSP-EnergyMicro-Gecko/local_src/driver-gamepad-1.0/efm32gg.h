@@ -1,5 +1,3 @@
-#include <stdint.h>
-
 // GPIO
 
 #define GPIO_PA_BASE 0x40006000
@@ -141,3 +139,6 @@
 #define SYSTICK_CTRL ((volatile uint32_t*)0xe000e010)
 #define SYSTICK_LOAD ((volatile uint32_t*)0xe000e014)
 
+// Miscellaneous
+
+#define DRIVER_NAME "LLP_GPad_Driver"
