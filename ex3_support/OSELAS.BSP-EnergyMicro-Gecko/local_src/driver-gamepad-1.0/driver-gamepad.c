@@ -85,7 +85,7 @@ static int __init drvr_init(void)
 	
 	// GPIO initialization (LDD3 Ch.9)
 	iowrite32(0x33333333, GPIO_PC_MODEL);
-	iowrite32(0xFF, GPIO_PC_DOUT);
+	iowrite32(0xff, GPIO_PC_DOUT);
 	// Enable interrupts
 	iowrite32(0x22222222, GPIO_EXTIPSELL);
 	iowrite32(0xff, GPIO_EXTIFALL);
@@ -122,7 +122,6 @@ irqreturn_t btn_intrpt_hndlr(int irq, void* dev_id, struct pt_regs* regs)
 static int drvr_fasync_helper(int fd, struct file *filp, int mode)
 {
 	//(LDD3 Ch.3, Ch.6)
-	
 	return fasync_helper(fd, filp, mode, &async_queue);
 }
 

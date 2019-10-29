@@ -21,7 +21,7 @@ static int drvr_fasync_helper(int fd, struct file *filp, int mode);
 dev_t dev_num;
 struct cdev driver_cdev;
 struct class* cl;
-struct scull_pipe dev;
+struct fasync_struct* queue;
 
 // Registration of driver functions
 static struct file_operations driver_fops = {
@@ -85,7 +85,7 @@ static int __init drvr_init(void)
 	
 	// GPIO initialization (LDD3 Ch.9)
 	iowrite32(0x33333333, GPIO_PC_MODEL);
-	iowrite32(0xFF, GPIO_PC_DOUT);
+	iowrite32(0xff, GPIO_PC_DOUT);
 	// Enable interrupts
 	iowrite32(0x22222222, GPIO_EXTIPSELL);
 	iowrite32(0xff, GPIO_EXTIFALL);
@@ -111,9 +111,12 @@ static ssize_t drvr_read(struct file *filp, char __user *buff, size_t count, lof
 irqreturn_t btn_intrpt_hndlr(int irq, void* dev_id, struct pt_regs* regs)
 {
 	iowrite32(ioread32(GPIO_IF), GPIO_IFC);
+	printk("Interrupt");
+	
 	// (LDD3 Ch.6)
-	if (dev->async_queue) {
-		kill_fasync(&dev->async_queue, SIGIO, POLL_IN);
+	if (queue) {
+		printk("kill");
+		kill_fasync(&queue, SIGIO, POLL_IN);
 	}
     
     return IRQ_HANDLED;
@@ -122,9 +125,8 @@ irqreturn_t btn_intrpt_hndlr(int irq, void* dev_id, struct pt_regs* regs)
 static int drvr_fasync_helper(int fd, struct file *filp, int mode)
 {
 	//(LDD3 Ch.3, Ch.6)
-	*dev = filp->private_data;
-	
-	return fasync_helper(fd, filp, mode, &dev->async_queue);
+	printk("Async %d\n", queue);	
+	return fasync_helper(fd, filp, mode, &queue);
 }
 
 module_init(drvr_init);
