@@ -10,6 +10,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <time.h>
+#include <stdbool.h>
+
 //====== Local variables ======//
 #define SCREENSIZE		240 * 320 
 #define BASECELLSIZE	12
@@ -24,7 +26,7 @@
 #define SNAKEHEIGHT 	6
 #define CENTERX			160
 #define CENTERY			120
-
+#define foodWidth       3
 
 int headx;
 int heady;
@@ -45,6 +47,9 @@ struct coordinate
 };
 typedef struct coordinate coordinate;
 coordinate snake[50];
+coordinate food;
+bool gameOverVar = false;
+ 
 
 //====== Local functions ======//
 void initScreen();
@@ -56,7 +61,9 @@ void initSnake();
 void moveSnake();
 void moveSnakeRight();
 void moveSnakeUp();
-
+void checkBorder();
+void gameOver();
+void checkFood();
 int main(int argc, char *argv[])
 {
 
@@ -70,7 +77,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 		
-	while (1) {
+	while (!gameOverVar) {
 		//sleep(200);
 		moveSnake();
 	}
@@ -227,7 +234,8 @@ void initSnake()
 		}
 	}	
 	
-
+	food.x = randx;
+	food.y = randy;
 	ioctl(lcdDriver, 0x4680, &shape);
 }	
 
@@ -245,6 +253,8 @@ void moveSnake()
 	shape.width = 320;
 	shape.height = 240;	
 	
+	checkBorder();
+	checkFood();
 	// Delete the tail
 	coordinate toDelete = snake[0];
 	for (i = toDelete.y; i < toDelete.y + SNAKEHEIGHT; i++) {
@@ -277,3 +287,49 @@ void moveSnake()
 	
 	ioctl(lcdDriver, 0x4680, &shape);
 }	
+
+void checkBorder()
+{
+	
+	if (  !(snake[snakeLength - 1].x > BORDERTHICKNESS && snake[snakeLength - 1].x <320 - BORDERTHICKNESS)
+	   || !(snake[snakeLength - 1].y > BORDERTHICKNESS && snake[snakeLength - 1].y <240 - BORDERTHICKNESS)  ) gameOver();
+	   
+}	   
+
+void gameOver(){
+	gameOverVar = true;
+	cleanScreen();
+}
+
+void checkFood()
+{
+	int i;
+	int j;
+	
+	for (i= 0; i < SNAKEHEIGHT; i++)
+		{
+			for (j= 0; j < SNAKEHEIGHT; j++)
+				{
+					
+				if (  (snake[snakeLength - 1].x + i > food.x && snake[snakeLength - 1].x + i< food.x + SNAKEHEIGHT)
+	   			   && (snake[snakeLength - 1].y + j > food.y && snake[snakeLength - 1].y + j < food.y + SNAKEHEIGHT)  ){
+	   
+	    			gameOver();
+	    			
+	    			}
+	    		}
+	   }
+	   // Remove food from frame buffer
+	   // Increase snake length
+	   // Add a new snake block
+	   // Produce new food and update food coordinates
+	   // Update the screen	   
+}	
+
+
+
+
+
+
+
+
